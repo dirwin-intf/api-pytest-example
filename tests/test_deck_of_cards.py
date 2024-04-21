@@ -2,7 +2,6 @@ import pytest
 import requests
 import json
 from types import SimpleNamespace
-import jsonpath
 
 base_url = "https://deckofcardsapi.com/api/"
 def get_response_data(response):
