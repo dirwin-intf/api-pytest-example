@@ -39,7 +39,7 @@ def test_shuffle_a_deck(create_response, shuffle_response):
     assert shuffle_data['shuffled'] == True
     assert shuffle_data['remaining'] == 52
 
-@pytest.mark.parametrize("cards_to_draw", [3, 5, 20])
+@pytest.mark.parametrize("cards_to_draw", [5, 10, 20])
 def test_draw_cards_from_a_deck(create_response, shuffle_response, cards_to_draw):
     setup_data = get_response_data(create_response)
     endpoint = "deck/{deck_id}/draw/?count={cards_to_draw}".format(
@@ -54,3 +54,9 @@ def test_draw_cards_from_a_deck(create_response, shuffle_response, cards_to_draw
     assert data['remaining'] == 52 - cards_to_draw
     assert isinstance(data['cards'], list)
     assert len(data['cards']) == cards_to_draw
+    for card in data['cards']:
+        matching_cards = list(filter(
+            lambda x: x['code'] == card['code'],
+            data['cards']
+        ))
+        assert len(matching_cards) == 1
