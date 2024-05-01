@@ -17,7 +17,7 @@ def create_response():
 def shuffle_response(create_response):
     setup_data = get_response_data(create_response)
     endpoint = "deck/{}/shuffle".format(setup_data['deck_id'])
-    response = http.get(url = base_url + endpoint)
+    response = http.get(endpoint)
     return response
 
 def test_create_a_deck(create_response):
@@ -48,7 +48,7 @@ def test_draw_cards_from_a_deck(
         deck_id=setup_data['deck_id'],
         cards_to_draw=cards_to_draw
     )
-    response = http.get(url = base_url + endpoint)
+    response = http.get(endpoint)
     data = get_response_data(response)
     assert response.status_code == 200
     assert data['deck_id'] == setup_data['deck_id']
