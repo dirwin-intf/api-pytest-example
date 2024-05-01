@@ -1,14 +1,11 @@
 import pytest
 import json
 from ..util import ExtendedRequest
-
 base_url = "https://deckofcardsapi.com/api/"
 http = ExtendedRequest(base_url)
 
 def get_response_data(response):
-    return json.loads(
-        response.text,
-    )
+    return json.loads(response.text)
 
 @pytest.fixture
 def create_response():
@@ -41,7 +38,11 @@ def test_shuffle_a_deck(create_response, shuffle_response):
     assert shuffle_data['remaining'] == 52
 
 @pytest.mark.parametrize("cards_to_draw", [5, 10, 20])
-def test_draw_cards_from_a_deck(create_response, shuffle_response, cards_to_draw):
+def test_draw_cards_from_a_deck(
+        create_response,
+        shuffle_response,
+        cards_to_draw
+    ):
     setup_data = get_response_data(create_response)
     endpoint = "deck/{deck_id}/draw/?count={cards_to_draw}".format(
         deck_id=setup_data['deck_id'],
