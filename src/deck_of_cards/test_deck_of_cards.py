@@ -1,7 +1,7 @@
 import pytest
 import json
 from ..util import ExtendedRequest
-base_url = "https://deckofcardsapi.com/api/"
+base_url = 'https://deckofcardsapi.com/api/'
 http = ExtendedRequest(base_url)
 
 def get_response_data(response):
@@ -9,14 +9,14 @@ def get_response_data(response):
 
 @pytest.fixture
 def create_response():
-    endpoint = "deck/new"
+    endpoint = 'deck/new'
     response = http.get(endpoint)
     return response
 
 @pytest.fixture
 def shuffle_response(create_response):
     setup_data = get_response_data(create_response)
-    endpoint = "deck/{}/shuffle".format(setup_data['deck_id'])
+    endpoint = 'deck/{}/shuffle'.format(setup_data['deck_id'])
     response = http.get(endpoint)
     return response
 
@@ -37,14 +37,14 @@ def test_shuffle_a_deck(create_response, shuffle_response):
     assert shuffle_data['shuffled'] == True
     assert shuffle_data['remaining'] == 52
 
-@pytest.mark.parametrize("cards_to_draw", [5, 10, 20])
+@pytest.mark.parametrize('cards_to_draw', [5, 10, 20])
 def test_draw_cards_from_a_deck(
         create_response,
         shuffle_response,
         cards_to_draw
     ):
     setup_data = get_response_data(create_response)
-    endpoint = "deck/{deck_id}/draw/?count={cards_to_draw}".format(
+    endpoint = 'deck/{deck_id}/draw/?count={cards_to_draw}'.format(
         deck_id=setup_data['deck_id'],
         cards_to_draw=cards_to_draw
     )
