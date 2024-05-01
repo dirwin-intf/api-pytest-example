@@ -1,9 +1,10 @@
 import pytest
-import requests
 import json
-from types import SimpleNamespace
+from ..util import ExtendedRequest
 
 base_url = "https://deckofcardsapi.com/api/"
+http = ExtendedRequest(base_url)
+
 def get_response_data(response):
     return json.loads(
         response.text,
@@ -12,14 +13,14 @@ def get_response_data(response):
 @pytest.fixture
 def create_response():
     endpoint = "deck/new"
-    response = requests.get(url = base_url + endpoint)
+    response = http.get(endpoint)
     return response
 
 @pytest.fixture
 def shuffle_response(create_response):
     setup_data = get_response_data(create_response)
     endpoint = "deck/{}/shuffle".format(setup_data['deck_id'])
-    response = requests.get(url = base_url + endpoint)
+    response = http.get(url = base_url + endpoint)
     return response
 
 def test_create_a_deck(create_response):
@@ -46,7 +47,7 @@ def test_draw_cards_from_a_deck(create_response, shuffle_response, cards_to_draw
         deck_id=setup_data['deck_id'],
         cards_to_draw=cards_to_draw
     )
-    response = requests.get(url = base_url + endpoint)
+    response = http.get(url = base_url + endpoint)
     data = get_response_data(response)
     assert response.status_code == 200
     assert data['deck_id'] == setup_data['deck_id']
