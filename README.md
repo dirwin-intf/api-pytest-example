@@ -1,6 +1,6 @@
 # api-pytest-example
 
-Basic example harness running multistep API tests against the (deck of cards API)[https://deckofcardsapi.com]
+Basic example harness running multistep API tests against a few public APIs
 
 Utilizes fixtures to set up data and paramaterize complex tests.
 
